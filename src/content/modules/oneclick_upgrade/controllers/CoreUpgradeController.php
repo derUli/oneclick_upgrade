@@ -1,9 +1,9 @@
 <?php
-class CoreUpgrade {
+class CoreUpgradeController extends Controller {
 	const DEFAULT_CHECK_URL = "https://www.ulicms.de/current_version.json";
 	private $checkURL = null;
 	public function __construct() {
-		$this->checkURL = CoreUpgrade::DEFAULT_CHECK_URL;
+		$this->checkURL = self::DEFAULT_CHECK_URL;
 	}
 	public function getCheckURL() {
 		return apply_filter ( $this->checkURL, "core_upgrade_check_url" );
@@ -12,11 +12,12 @@ class CoreUpgrade {
 		$this->checkURL = $url;
 	}
 	private function getJSON() {
-		$data = file_get_contents_wrapper ( $this->getCheckURL (), true );
+		$data = file_get_contents ( $this->getCheckURL () );
 		if (! $data) {
 			return null;
 		}
 		$data = json_decode ( $data );
+		return $data;
 	}
 	public function checkForUpgrades() {
 		$data = $this->getJSON ();
@@ -26,12 +27,13 @@ class CoreUpgrade {
 		$version = $data->version;
 		$cfg = new ulicms_version ();
 		$oldVersion = $cfg->getInternalVersionAsString ();
-		if (version_compare ( $oldVersion, $data->version, ">" )) {
+		if (version_compare ( $oldVersion, $data->version, "<" )) {
 			return $data->version;
 		}
 		return null;
 	}
-	public function runCoreUpgrade() {
+	public function runUpgrade() {
+		set_time_limit ( 0 );
 		$acl = new ACL ();
 		if (! $acl->hasPermission ( "update_system" ) or is_admin_dir () or ! $this->checkForUpgrades ()) {
 			return false;
@@ -49,15 +51,13 @@ class CoreUpgrade {
 			mkdir ( $tmpDir, 0777, true );
 		}
 		
-		$data = file_get_contents_wrapper ( $jsonData->file, false );
+		$data = file_get_contents ( $jsonData->file );
 		file_put_contents ( $tmpArchive, $data );
-		
 		$zip = new ZipArchive ();
 		if ($zip->open ( $tmpArchive ) === TRUE) {
 			$zip->extractTo ( $tmpDir );
 			$zip->close ();
 		}
-		unlink ( $tmpArchive );
 		
 		$upgradeCodeDir = Path::resolve ( "$tmpDir/ulicms" );
 		
