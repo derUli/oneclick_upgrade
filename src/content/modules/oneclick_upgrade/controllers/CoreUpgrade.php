@@ -33,7 +33,7 @@ class CoreUpgrade {
 	}
 	public function runCoreUpgrade() {
 		$acl = new ACL ();
-		if (! $acl->hasPermission ( "system_update" ) or is_admin_dir () or ! $this->checkForUpgrades ()) {
+		if (! $acl->hasPermission ( "update_system" ) or is_admin_dir () or ! $this->checkForUpgrades ()) {
 			return false;
 		}
 		
