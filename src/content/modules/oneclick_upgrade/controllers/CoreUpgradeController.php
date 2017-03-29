@@ -12,7 +12,7 @@ class CoreUpgradeController extends Controller {
 		$this->checkURL = $url;
 	}
 	private function getJSON() {
-		$data = file_get_contents ( $this->getCheckURL () );
+		$data = file_get_contents_wrapper ( $this->getCheckURL (), true );
 		if (! $data) {
 			return null;
 		}
@@ -51,7 +51,7 @@ class CoreUpgradeController extends Controller {
 			mkdir ( $tmpDir, 0777, true );
 		}
 		
-		$data = file_get_contents ( $jsonData->file );
+		$data = file_get_contents_wrapper ( $jsonData->file, false );
 		file_put_contents ( $tmpArchive, $data );
 		$zip = new ZipArchive ();
 		if ($zip->open ( $tmpArchive ) === TRUE) {
