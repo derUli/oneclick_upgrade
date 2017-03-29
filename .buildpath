@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildpath>
+	<buildpathentry external="true" kind="lib" path="C:/Users/ulrich1992/Documents/GitHub/oneclick_upgrade"/>
+	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
+	<buildpathentry kind="src" path="src/content/modules/oneclick_upgrade/controllers"/>
+	<buildpathentry external="true" kind="lib" path="C:/Users/ulrich1992/Documents/GitHub/ulicms/ulicms"/>
+</buildpath>
