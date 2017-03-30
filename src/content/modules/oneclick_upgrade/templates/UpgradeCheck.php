@@ -44,6 +44,13 @@ if ($acl->hasPermission ( "update_system" )) {
 <div class="alert alert-danger">
 <?php translate("upgrade_warning_notice");?>
 </div>
+	<div class="row">
+		<div class="col-xs-12">
+			<h2><?php translate("exclude_folders");?></h2>
+				<textarea rows="25" cols="80" name="exclude_folders"><?php Template::escape(Settings::get("oneclick_upgrade_default_exclude_folders") ?? "");?></textarea>
+		
+		</div>
+	</div>
 	<input type="submit" value="<?php translate("do_core_upgrade");?>">
 <?php }?>
 </form>

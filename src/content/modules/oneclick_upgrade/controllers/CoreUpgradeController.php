@@ -61,6 +61,14 @@ class CoreUpgradeController extends Controller {
 			return null;
 		}
 		
+		$exclude_folders = Request::getVar ( "exclude_folders" );
+		if (isNotNullOrEmpty ( $exclude_folders )) {
+			$exclude_folders = normalizeLN ( $exclude_folders, "\n" );
+			$exclude_Folders = explode ( "\n", $exclude_folders );
+			$exclude_folders = array_filter ( $exclude_folders );
+			$this->setExcludedFolders ( $exclude_folders );
+		}
+		
 		$tmpDir = Path::resolve ( "ULICMS_TMP/upgrade" );
 		$tmpArchive = Path::resolve ( "$tmpDir/upgrade.zip" );
 		
