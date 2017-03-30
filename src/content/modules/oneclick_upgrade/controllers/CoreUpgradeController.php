@@ -103,7 +103,7 @@ class CoreUpgradeController extends Controller {
 		
 		sureRemoveDir ( $upgradeCodeDir, true );
 		
-		// include_once Path::resolve ( "ULICMS_ROOT/update.php" );
+		include_once Path::resolve ( "ULICMS_ROOT/update.php" );
 		return true;
 	}
 }
