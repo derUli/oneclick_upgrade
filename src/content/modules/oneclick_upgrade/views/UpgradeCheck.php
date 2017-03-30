@@ -10,7 +10,8 @@ if ($acl->hasPermission ( "update_system" )) {
 <p><?php translate("no_new_version_available");?></p>
 <?php }?>
 <form action="../?sClass=CoreUpgradeController&sMethod=runUpgrade"
-	method="get">
+	method=post>
+	<?php csrf_token_html();?>
 	<div class="row">
 		<div class="col-xs-6 text-left">
 			<strong><?php translate("installed_version");?></strong>
