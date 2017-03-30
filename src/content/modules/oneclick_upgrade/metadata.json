@@ -6,7 +6,7 @@
 		"CoreUpgradeController" : "controllers/CoreUpgradeController"
 	},
 	"actions" : {
-		"UpgradeCheck" : "views/UpgradeCheck"
+		"UpgradeCheck" : "templates/UpgradeCheck"
 	},
 	"action_controllers" : {
 		"UpgradeCheck" : "CoreUpgradeController"

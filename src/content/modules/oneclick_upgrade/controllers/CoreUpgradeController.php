@@ -33,7 +33,8 @@ class CoreUpgradeController extends Controller {
 		return null;
 	}
 	public function runUpgrade() {
-		set_time_limit ( 0 );
+		@set_time_limit ( 0 );
+		@ignore_user_abort ( 1 );
 		$acl = new ACL ();
 		
 		if (! $acl->hasPermission ( "update_system" ) or is_admin_dir () or ! $this->checkForUpgrades () or get_request_method () != "POST") {

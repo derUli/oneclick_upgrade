@@ -46,8 +46,7 @@ if ($acl->hasPermission ( "update_system" )) {
 </div>
 	<input type="submit" value="<?php translate("do_core_upgrade");?>">
 <?php }?>
-</form>
-<!-- @TODO: Release Notes anzeigen, wenn verfügbar in der eingestellten Sprache -->
+</form
 <?php
 } else {
 	noperms ();
