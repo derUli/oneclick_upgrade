@@ -2,8 +2,23 @@
 class CoreUpgradeController extends Controller {
 	const DEFAULT_CHECK_URL = "https://www.ulicms.de/current_version.json";
 	private $checkURL = null;
+	private $excludeFolders = array ();
 	public function __construct() {
 		$this->checkURL = self::DEFAULT_CHECK_URL;
+	}
+	public function excludeFolder($folder) {
+		$this->excludeFolders [] = $folder;
+	}
+	public function getExcludedFolders() {
+		return $this->excludeFolders;
+	}
+	public function setExcludedFolders($folders) {
+		$this->excludeFolders = $folders;
+	}
+	public function removeExcludedFolder($folder) {
+		if (($key = array_search ( $folder, $this->excludeFolders )) !== false) {
+			unset ( $this->excludeFolders [$key] );
+		}
 	}
 	public function getCheckURL() {
 		return apply_filter ( $this->checkURL, "core_upgrade_check_url" );
@@ -63,6 +78,19 @@ class CoreUpgradeController extends Controller {
 		
 		$upgradeCodeDir = Path::resolve ( "$tmpDir/ulicms" );
 		
+		$excluded = $this->getExcludedFolders ();
+		foreach ( $excluded as $folder ) {
+			if (startsWith ( $folder, "/" )) {
+				$folder = ltrim ( $folder, "/" );
+			}
+			
+			$folder = rtrim ( $folder, "/" );
+			
+			$fullPath = realpath ( Path::resolve ( "$upgradeCodeDir/$folder" ) );
+			if (startsWith ( $fullPath, $upgradeCodeDir ) and file_Exists ( $fullPath ) and is_dir ( $fullPath )) {
+				SureRemoveDir ( $fullPath, true );
+			}
+		}
 		recurse_copy ( $upgradeCodeDir, ULICMS_ROOT );
 		
 		sureRemoveDir ( $upgradeCodeDir, true );
