@@ -58,17 +58,16 @@ class CoreUpgradeController extends Controller {
 		
 		$jsonData = $this->getJSON ();
 		if (! $jsonData) {
-			return null;
+			return false;
 		}
 		
-		$exclude_folders = Request::getVar ( "exclude_folders" );
-		if (isNotNullOrEmpty ( $exclude_folders )) {
+		$exclude_folders = (isset ( $_POST ["exclude_folders"] ) and isNotNullOrEmpty ( $_POST ["exclude_folders"] )) ? $_POST ["exclude_folders"] : null;
+		if ($exclude_folders) {
 			$exclude_folders = normalizeLN ( $exclude_folders, "\n" );
 			$exclude_Folders = explode ( "\n", $exclude_folders );
-			$exclude_folders = array_filter ( $exclude_folders );
-			$this->setExcludedFolders ( $exclude_folders );
+			array_filter ( $exclude_Folders );
+			$this->setExcludedFolders ( $exclude_Folders );
 		}
-		
 		$tmpDir = Path::resolve ( "ULICMS_TMP/upgrade" );
 		$tmpArchive = Path::resolve ( "$tmpDir/upgrade.zip" );
 		
@@ -87,15 +86,16 @@ class CoreUpgradeController extends Controller {
 		$upgradeCodeDir = Path::resolve ( "$tmpDir/ulicms" );
 		
 		$excluded = $this->getExcludedFolders ();
-		foreach ( $excluded as $folder ) {
-			if (startsWith ( $folder, "/" )) {
-				$folder = ltrim ( $folder, "/" );
+		for($i = 0; $i < count ( $excluded ); $i ++) {
+			$myFolder = $excluded [$i];
+			if (startsWith ( $myFolder, "/" )) {
+				$myFolder = ltrim ( $myFolder, "/" );
 			}
 			
-			$folder = rtrim ( $folder, "/" );
+			$myFolder = rtrim ( $myFolder, "/" );
+			$fullPath = realpath ( Path::resolve ( "$upgradeCodeDir/$myFolder" ) );
 			
-			$fullPath = realpath ( Path::resolve ( "$upgradeCodeDir/$folder" ) );
-			if (startsWith ( $fullPath, $upgradeCodeDir ) and file_Exists ( $fullPath ) and is_dir ( $fullPath )) {
+			if (startsWith ( $fullPath, $upgradeCodeDir ) and file_exists ( $fullPath ) and is_dir ( $fullPath )) {
 				SureRemoveDir ( $fullPath, true );
 			}
 		}
@@ -103,7 +103,7 @@ class CoreUpgradeController extends Controller {
 		
 		sureRemoveDir ( $upgradeCodeDir, true );
 		
-		include_once Path::resolve ( "ULICMS_ROOT/update.php" );
+		// include_once Path::resolve ( "ULICMS_ROOT/update.php" );
 		return true;
 	}
 }
