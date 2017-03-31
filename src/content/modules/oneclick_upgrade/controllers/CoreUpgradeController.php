@@ -36,27 +36,27 @@ class CoreUpgradeController extends Controller {
 		@set_time_limit ( 0 );
 		@ignore_user_abort ( 1 );
 		$acl = new ACL ();
-
+		
 		if (! $acl->hasPermission ( "update_system" ) or is_admin_dir () or ! $this->checkForUpgrades () or get_request_method () != "POST") {
 			return false;
 		}
-
+		
 		$jsonData = $this->getJSON ();
 		if (! $jsonData) {
 			return null;
 		}
-
+		
 		$tmpDir = Path::resolve ( "ULICMS_TMP/upgrade" );
 		$tmpArchive = Path::resolve ( "$tmpDir/upgrade.zip" );
-
-		if(file_exists($tmpDir)){
-					sureRemoveDir ( $tmpDir, true );
+		
+		if (file_exists ( $tmpDir )) {
+			sureRemoveDir ( $tmpDir, true );
 		}
-
+		
 		if (! file_exists ( $tmpDir )) {
 			mkdir ( $tmpDir, 0777, true );
 		}
-
+		
 		$data = file_get_contents_wrapper ( $jsonData->file, false );
 		file_put_contents ( $tmpArchive, $data );
 		$zip = new ZipArchive ();
@@ -64,13 +64,19 @@ class CoreUpgradeController extends Controller {
 			$zip->extractTo ( $tmpDir );
 			$zip->close ();
 		}
-
+		
 		$upgradeCodeDir = Path::resolve ( "$tmpDir/ulicms" );
-
+		
+		// Workaround für einen Kunden, bei dem die aktuelle Version von KCFinder Probleme macht
+		if (intval ( Settings::get ( "oneclick_upgrade_skip_kcfinder" ) )) {
+			$kcfinderFolder = Path::resolve ( "$upgradeCodeDir/admin/kcfinder" );
+			sureRemoveDir ( $kcfinderFolder, true );
+		}
+		
 		recurse_copy ( $upgradeCodeDir, ULICMS_ROOT );
-
+		
 		sureRemoveDir ( $tmpDir, true );
-
+		
 		include_once Path::resolve ( "ULICMS_ROOT/update.php" );
 		return true;
 	}
