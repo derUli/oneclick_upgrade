@@ -11,7 +11,6 @@ function oneclick_upgrade_admin() {
 		
 		?>
 <div class="alert alert-success">
-
 		<?php translate("changes_was_saved")?>
 		</div>
 <?php
