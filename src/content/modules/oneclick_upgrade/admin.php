@@ -10,7 +10,7 @@ function oneclick_upgrade_admin() {
 	if (get_request_method () == "POST") {
 		
 		?>
-<div class="alert alert-success alert-dismissable">
+<div class="alert alert-success alert-dismissable fade in">
   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 		<?php translate("changes_was_saved")?>
 		</div>
