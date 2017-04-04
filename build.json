@@ -1,6 +1,6 @@
 {
    "id" : "oneclick_upgrade",
-   "version" : "1.0.1",
+   "version" : "1.0.2",
    "description" : "Upgrade the UliCMS core with just one click",
    "categories" : ["upgrade", "administrations"],
    "compatible_from" : "2017.1",
