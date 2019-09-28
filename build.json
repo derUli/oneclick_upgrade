@@ -1,6 +1,6 @@
 {
 	"id": "oneclick_upgrade",
-	"version": "2.4",
+	"version": "2.5",
 	"description": "Upgrade the UliCMS core with just one click",
 	"categories": [
 		"upgrade",
