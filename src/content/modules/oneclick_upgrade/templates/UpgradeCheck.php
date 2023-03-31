@@ -1,4 +1,6 @@
 <?php
+use App\Backend\UliCMSVersion;
+
 $permissionChecker = new ACL();
 if ($permissionChecker->hasPermission("update_system")) {
     $version = new UliCMSVersion();
@@ -47,8 +49,8 @@ if ($permissionChecker->hasPermission("update_system")) {
             </div>
             <p>
                 <button type="submit" class="btn btn-danger">
-                  <i class="fas fa-download"></i>
-                  <?php translate("do_core_upgrade"); ?>
+                    <i class="fas fa-download"></i>
+                    <?php translate("do_core_upgrade"); ?>
                 </button>
             </p>
         <?php } ?>

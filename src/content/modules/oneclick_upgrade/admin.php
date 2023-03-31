@@ -1,9 +1,13 @@
 <?php
-use UliCMS\HTML\Alert;
-use function UliCMS\HTML\text;
+
+use App\HTML\Alert;
+
+use function App\HTML\text;
+
 define("MODULE_ADMIN_HEADLINE", get_translation("oneclick_upgrade") . " " . get_translation("settings"));
 
-function oneclick_upgrade_admin() {
+function oneclick_upgrade_admin()
+{
     if (Request::isPost()) {
         Settings::set("oneclick_upgrade_channel", strval($_POST["oneclick_upgrade_channel"]));
     }
@@ -12,7 +16,10 @@ function oneclick_upgrade_admin() {
         "fast",
         "slow",
     );
+
+    $channelCount = count($channels);
     ?>
+
     <?php
     if (Request::isPost()) {
         ?>
@@ -20,8 +27,7 @@ function oneclick_upgrade_admin() {
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <?php translate("changes_was_saved") ?>
         </div>
-        <?php
-    }
+    <?php }
     ?>
     <form action="<?php echo getModuleAdminSelfPath(); ?>"
           method="post">
@@ -32,13 +38,13 @@ function oneclick_upgrade_admin() {
                 name="oneclick_upgrade_channel"
                 size=1
                 id="oneclick_upgrade_channel">
-                    <?php for ($i = 0; $i < count($channels); $i++) { ?>
+                    <?php for ($i = 0; $i < $channelCount; $i++) { ?>
                     <option value="<?php Template::escape($channels[$i]) ?>"
                     <?php
                     if ($oneclick_upgrade_channel == $channels[$i]) {
                         echo " selected";
                     }
-                    ?>><?php Template::escape(get_translation($channels[$i])) ?></option>
+                        ?>><?php Template::escape(get_translation($channels[$i])) ?></option>
                         <?php } ?>
 
             </select>
@@ -57,8 +63,10 @@ function oneclick_upgrade_admin() {
     </form>
     <?php
     enqueueScriptFile(
-            ModuleHelper::buildRessourcePath("oneclick_upgrade",
-                    "js/settings.js")
-    );
-	combinedScriptHtml();
+                            ModuleHelper::buildRessourcePath(
+            "oneclick_upgrade",
+            "js/settings.js"
+        )
+                        );
+    combinedScriptHtml();
 }
