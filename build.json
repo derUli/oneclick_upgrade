@@ -1,11 +1,11 @@
 {
 	"id": "oneclick_upgrade",
-	"version": "3.1",
+	"version": "3.2",
 	"description": "Upgrade the UliCMS core with just one click",
 	"categories": [
 		"upgrade",
 		"administrations"
 	],
-	"compatible_from": "2023.3",
+	"compatible_from": "2023.4",
 	"dependencies": []
 }
